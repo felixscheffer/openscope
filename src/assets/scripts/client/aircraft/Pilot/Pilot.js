@@ -606,6 +606,12 @@ export default class Pilot {
         const datum = runwayModel.positionModel;
         const course = runwayModel.angle;
         const descentAngle = runwayModel.ils.glideslopeGradient;
+        const validRunway = this._fms.setArrivalRunway(runwayModel);
+
+        if (!validRunway[0]) {
+            return validRunway;
+        }
+
         const lateralGuidance = this._interceptCourse(datum, course);
         const verticalGuidance = this._interceptGlidepath(datum, course, descentAngle);
 
@@ -619,7 +625,6 @@ export default class Pilot {
         }
 
         this.exitHold();
-        this._fms.setArrivalRunway(runwayModel);
         this.hasApproachClearance = true;
 
         const readback = {};
